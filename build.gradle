@@ -1,16 +1,3 @@
-buildscript {
-  repositories {
-    maven {
-      url "https://plugins.gradle.org/m2/"
-    }
-  }
-}
-
-plugins {
-    id 'io.codearte.nexus-staging' version '0.30.0' apply false
-    id "maven-publish"
-}
-
 apply plugin: 'scala'
 apply plugin: 'java-library'
 
@@ -19,75 +6,6 @@ group 'com.sbuslab'
 repositories {
     maven { url 'https://oss.sonatype.org/content/repositories/public' }
     mavenCentral()
-}
-
-if (this.parent == null) {
-    apply plugin: 'io.codearte.nexus-staging'
-    apply plugin: 'maven-publish'
-
-    nexusStaging {
-        packageGroup = 'com.sbuslab'
-        stagingProfileId = '3eeedfb73a4d9e'
-        numberOfRetries = 100
-        delayBetweenRetriesInMillis = 5000
-    }
-}
-
-publishing {
-        publications {
-        mavenJava(MavenPublication) {
-            artifactId = 'model'
-            from components.java
-            versionMapping {
-                usage('java-api') {
-                    fromResolutionOf('runtimeClasspath')
-                }
-                usage('java-runtime') {
-                    fromResolutionResult()
-                }
-            }
-            pom {
-                name = 'model'
-                description = 'Tools for akka-http (marshaling, error handling, websockets, sbus support)'
-                url = 'https://github.com/sbuslab/model'
-                inceptionYear = '2018'
-
-                licenses {
-                    license {
-                        name = 'The Apache Software License, Version 2.0'
-                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                        distribution = 'repo'
-                    }
-                }
-
-                developers {
-                    developer {
-                        id = 'kulikovd'
-                        name = 'Dmitry Kulikov'
-                        email = 'kulikov.dm@gmail.com'
-                    }
-                }
-
-                scm {
-                    url = 'https://github.com/sbuslab/model'
-                    connection = 'scm:https://github.com/sbuslab/model.git'
-                    developerConnection = 'scm:git@github.com:sbuslab/model.git'
-                }
-            }
-        }
-    }
-//    repositories {
-//        maven {
-//            def releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2"
-//            def snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots"
-//            url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
-//
-//            credentials {
-//                username = project.findProperty('nexusUsername') ?: ''
-//                password = project.findProperty('nexusPassword') ?: ''
-//            }
-//        }
-//    }
 }
 
 dependencies {
